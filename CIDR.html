@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>子网掩码计算器</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 5rem 10rem 5rem;
+            padding: 0;
+            background-color: #f0f0f0;
+        }
+        h1 {
+            background-color: #333;
+            color: #fff;
+            padding: 10px 0;
+            margin: 0;
+            text-align: center;
+        }
+        #calculator {
+            width: 50%;
+            margin: 50px auto;
+            padding: 20px;
+            background-color: #fff;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+            border-radius: 10px;
+            border: 1px solid #ccc;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+            background: linear-gradient(to bottom, #ffffff 0%,#f6f6f6 47%,#ededed 100%);
+        }
+        label {
+            display: block;
+            margin-top: 20px;
+        }
+        input, select, button {
+            width: 100%;
+            padding: 10px;
+            margin-top: 5px;
+            box-sizing: border-box;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+        }
+        button {
+            background-color: #333;
+            color: #fff;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #666;
+        }
+        #result {
+            margin-top: 20px;
+            background-color: #f9f9f9;
+            padding: 10px;
+            border-radius: 5px;
+            border: 1px solid #ddd;
+        }
+        .networkAddress {
+            color: orange;
+        }
+    </style>
+    <body>
+    <h1>子网掩码计算器</h1>
+    <label for="ip">输入IP地址:</label>
+    <input type="text" id="ip" name="ip">
+    <label for="mask">选择子网掩码:</label>
+    <select id="mask" name="mask">
+        <option value="">请选择...</option>
+        <option value="128.0.0.0">128.0.0.0</option>
+        <option value="192.0.0.0">192.0.0.0</option>
+        <option value="224.0.0.0">224.0.0.0</option>
+        <option value="240.0.0.0">240.0.0.0</option>
+        <option value="248.0.0.0">248.0.0.0</option>
+        <option value="252.0.0.0">252.0.0.0</option>
+        <option value="254.0.0.0">254.0.0.0</option>
+        <option value="255.0.0.0">255.0.0.0</option>
+        <option value="255.128.0.0">255.128.0.0</option>
+        <option value="255.192.0.0">255.192.0.0</option>
+        <option value="255.224.0.0">255.224.0.0</option>
+        <option value="255.240.0.0">255.240.0.0</option>
+        <option value="255.248.0.0">255.248.0.0</option>
+        <option value="255.252.0.0">255.252.0.0</option>
+        <option value="255.254.0.0">255.254.0.0</option>
+        <option value="255.255.0.0">255.255.0.0</option>
+        <option value="255.255.128.0">255.255.128.0</option>
+        <option value="255.255.192.0">255.255.192.0</option>
+        <option value="255.255.224.0">255.255.224.0</option>
+        <option value="255.255.240.0">255.255.240.0</option>
+        <option value="255.255.248.0">255.255.248.0</option>
+        <option value="255.255.252.0">255.255.252.0</option>
+        <option value="255.255.254.0">255.255.254.0</option>
+        <option value="255.255.255.0">255.255.255.0</option>
+        <option value="255.255.255.128">255.255.255.128</option>
+        <option value="255.255.255.192">255.255.255.192</option>
+        <option value="255.255.255.224">255.255.255.224</option>
+        <option value="255.255.255.240">255.255.255.240</option>
+        <option value="255.255.255.248">255.255.255.248</option>
+        <option value="255.255.255.252">255.255.255.252</option>
+        <option value="255.255.255.254">255.255.255.254</option>
+        <option value="255.255.255.255">255.255.255.255</option>
+    </select>
+    <label for="maskBits">或选择掩码位:</label>
+    <select id="maskBits" name="maskBits">
+        <option value="">请选择...</option>
+        <option value="1">1</option>
+        <option value="2">2</option>
+        <option value="3">3</option>
+        <option value="4">4</option>
+        <option value="5">5</option>
+        <option value="6">6</option>
+        <option value="7">7</option>
+        <option value="8">8</option>
+        <option value="9">9</option>
+        <option value="10">10</option>
+        <option value="11">11</option>
+        <option value="12">12</option>
+        <option value="13">13</option>
+        <option value="14">14</option>
+        <option value="15">15</option>
+        <option value="16">16</option>
+        <option value="17">17</option>
+        <option value="18">18</option>
+        <option value="19">19</option>
+        <option value="20">20</option>
+        <option value="21">21</option>
+        <option value="22">22</option>
+        <option value="23">23</option>
+        <option value="24">24</option>
+        <option value="25">25</option>
+        <option value="26">26</option>
+        <option value="27">27</option>
+        <option value="28">28</option>
+        <option value="29">29</option>
+        <option value="30">30</option>
+        <option value="31">31</option>
+        <option value="32">32</option>
+    </select>
+    <button onclick="calculate()">计算</button>
+    <p id="result"></p>
+
+    <script>
+        function calculate() {
+            var ip = document.getElementById('ip').value;
+            var mask = document.getElementById('mask').value;
+            var maskBits = document.getElementById('maskBits').value;
+            if (mask === '' && maskBits === '') {
+                document.getElementById('result').innerHTML = '错误：请输入子网掩码或掩码位！';
+                return;
+            }
+            if (mask !== '' && maskBits !== '') {
+                document.getElementById('result').innerHTML = '错误：只能输入子网掩码或掩码位其中之一！';
+                return;
+            }
+            if (maskBits !== '') {
+                mask = '';
+                for (var i = 0; i < 4; i++) {
+                    if (maskBits > 8) {
+                        mask += '255.';
+                        maskBits -= 8;
+                    } else {
+                        mask += (256 - Math.pow(2, 8 - maskBits)).toString() + '.';
+                        maskBits = 0;
+                    }
+                }
+                mask = mask.slice(0, -1);
+            }
+            var binaryMask = '';
+            mask.split('.').forEach(function(octet) {
+                binaryMask += parseInt(octet, 10).toString(2).padStart(8, '0');
+            });
+            maskBits = binaryMask.split('1').length - 1;
+            var maxAddresses = Math.pow(2, 32 - maskBits);
+            var usableAddresses = maxAddresses - 2;
+            var networkAddress = ip.split('.').map(function(octet, index) {
+                return (parseInt(octet, 10) & parseInt(mask.split('.')[index], 10)).toString();
+            }).join('.');
+            var broadcastAddress = ip.split('.').map(function(octet, index) {
+                return (parseInt(octet, 10) | (255 - parseInt(mask.split('.')[index], 10))).toString();
+            }).join('.');
+            var vlsm = '/' + maskBits;
+            var inverseMask = mask.split('.').map(function(octet) {
+                return (255 - parseInt(octet, 10)).toString();
+            }).join('.');
+            document.getElementById('result').innerHTML = '网络地址: ' + networkAddress + '<br>子网掩码: ' + mask + '<br>反掩码: ' + inverseMask + '<br>最大地址数: ' + maxAddresses + '<br>可用地址数: ' + usableAddresses + '<br>地址范围: ' + networkAddress + ' - ' + broadcastAddress + '<br>VLSM 表示法: ' + vlsm;
+        }
+    </script>
+</body>
+</html>
